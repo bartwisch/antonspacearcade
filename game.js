@@ -62,12 +62,19 @@ let bullets = [];
 let enemies = [];
 let bulletSpeed = 7;
 let enemySpeed = 3;
+let lives = 3;
 
 // Draw player using the image
 function drawPlayer() {
     ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
 }
 
+// Function to draw lives count
+function drawLives() {
+    ctx.font = '20px Arial';
+    ctx.fillStyle = 'black';
+    ctx.fillText('Lives: ' + lives, 20, 30);
+}
 
 // Create bullets
 function drawBullets() {
@@ -94,10 +101,10 @@ function drawEnemies() {
             enemies.splice(index, 1);
         }
 
-        // Check collision with player (game over logic can be implemented here)
+        // Check if the enemy hits the player
         if (collisionDetection(player, enemy)) {
-            alert('Game Over');
-            document.location.reload();
+            enemies.splice(index, 1);  // Remove enemy
+            loseLife();  // Decrease life
         }
 
         // Check if a bullet hits an enemy
@@ -111,6 +118,14 @@ function drawEnemies() {
     });
 }
 
+// Decrease lives and check for game over
+function loseLife() {
+    lives--;  // Decrease the number of lives by 1
+    if (lives <= 0) {
+        gameOver();  // Call the gameOver function when lives run out
+    }
+}
+
 // Collision detection
 function collisionDetection(rect1, rect2) {
     return rect1.x < rect2.x + rect2.width &&
@@ -119,6 +134,19 @@ function collisionDetection(rect1, rect2) {
            rect1.y + rect1.height > rect2.y;
 }
 
+// Game over function
+function gameOver() {
+    alert('Game Over! Resetting...');
+    resetGame();  // Reset the game when the player loses all lives
+}
+
+// Function to reset the game
+function resetGame() {
+    lives = 3;  // Reset lives back to 3
+    player.x = canvas.width / 2 - 50;  // Reset player position
+    enemies = [];  // Clear all enemies
+    bullets = [];  // Clear all bullets
+}
 
 // Randomly spawn enemies
 function spawnEnemy() {
@@ -157,10 +185,12 @@ function update() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    drawPlayer();  // Now draw the player using the image
-    drawBullets();
-    drawEnemies();
+    drawPlayer();  // Draw the player using the image
+    drawBullets();  // Draw bullets
+    drawEnemies();  // Draw enemies using the image
+    drawLives();  // Draw the remaining lives on the screen
 }
+
 
 // Spawn enemies at intervals
 setInterval(spawnEnemy, 2000);
