@@ -8,12 +8,17 @@ export function drawEnemies(ctx, enemies, bullets) {
         enemy.y += 3;
         ctx.drawImage(enemyImage, enemy.x, enemy.y, enemy.width, enemy.height);
 
-        // Logik für Kollision etc.
+        // Gegner entfernen, wenn sie den unteren Rand des Bildschirms erreichen
+        if (enemy.y > ctx.canvas.height) {
+            enemies.splice(index, 1);
+        }
+
+        // Logik für Kollision mit Kugeln hinzufügen (optional)
     });
 }
 
-export function spawnEnemy() {
-    const xPosition = Math.random() * (canvas.width - 50);
+export function spawnEnemy(canvasWidth) {
+    const xPosition = Math.random() * (canvasWidth - 50);
     enemies.push({
         x: xPosition,
         y: -50,

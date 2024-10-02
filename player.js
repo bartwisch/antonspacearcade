@@ -1,11 +1,16 @@
 export let player = {
-    x: canvas.width / 2 - 50,
-    y: canvas.height - 100,
+    x: 0, // Initial value
+    y: 0, // Initial value
     width: 50,
     height: 50,
     dx: 0,
     speed: 5,
 };
+
+export function initPlayer(canvasWidth, canvasHeight) {
+    player.x = canvasWidth / 2 - 50;
+    player.y = canvasHeight - 100;
+}
 
 const playerImage = new Image();
 playerImage.src = 'player1.png';
