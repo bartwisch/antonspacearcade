@@ -1,7 +1,8 @@
 import { player, movePlayer, stopPlayer, drawPlayer, initPlayer } from './player.js';
-import { drawEnemies, spawnEnemy, enemies } from './enemy.js'; // Importiere enemies
+import { drawEnemies, spawnEnemy, enemies,removeEnemyAndAddExplosion } from './enemy.js'; // Importiere enemies
 import { drawBullets, bullets, shootBullet } from './bullet.js';
 import { drawLives, drawScore, isCollision, loseLife, resetGame, gameOver, lives, score, increaseScore } from './utils.js'; // Import der Variablen und Funktionen
+import { playLaserSound, playExplosionSound } from './sounds.js'; // Importiere die Soundfunktion
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -36,8 +37,11 @@ function update() {
             if (isCollision(bullet, enemy)) {
                 // Entferne die getroffene Kugel
                 bullets.splice(bulletIndex, 1);
+                removeEnemyAndAddExplosion(enemy); // Explosion hinzufügen
+            
                 // Entferne den getroffenen Gegner
                 enemies.splice(enemyIndex, 1);
+                playExplosionSound();
                 // Erhöhe die Punktzahl
                 increaseScore();
             }
@@ -49,6 +53,7 @@ function update() {
         if (isCollision(player, enemy)) {
             // Gegner entfernen
             enemies.splice(enemyIndex, 1);
+            playExplosionSound();
 
             // Leben um 1 reduzieren
             loseLife(); // Leben um 1 reduzieren
@@ -73,5 +78,6 @@ document.addEventListener('keyup', stopPlayer);
 document.addEventListener('keydown', (e) => {
     if (e.key === ' ') {  // Leertaste zum Schießen
         shootBullet();
+        playLaserSound(); // Laser-Sound abspielen
     }
 });
