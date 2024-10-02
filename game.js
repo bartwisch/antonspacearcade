@@ -1,7 +1,7 @@
 import { player, movePlayer, stopPlayer, drawPlayer, initPlayer } from './player.js';
 import { drawEnemies, spawnEnemy, enemies } from './enemy.js'; // Importiere enemies
 import { drawBullets, bullets, shootBullet } from './bullet.js';
-import { drawScore, drawLives, isCollision, loseLife, resetGame, gameOver } from './utils.js';
+import { drawLives, drawScore, isCollision, loseLife, resetGame, gameOver, lives, score, increaseScore } from './utils.js'; // Import der Variablen und Funktionen
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -11,8 +11,6 @@ canvas.height = window.innerHeight;
 
 initPlayer(canvas.width, canvas.height);
 
-let lives = 3;
-let score = 0;
 
 function update() {
     // Bewegt den Spieler
@@ -41,7 +39,7 @@ function update() {
                 // Entferne den getroffenen Gegner
                 enemies.splice(enemyIndex, 1);
                 // Erhöhe die Punktzahl
-                score += 1;
+                increaseScore();
             }
         });
     });
@@ -53,7 +51,7 @@ function update() {
             enemies.splice(enemyIndex, 1);
 
             // Leben um 1 reduzieren
-            lives -= 1;
+            loseLife(); // Leben um 1 reduzieren
 
             // Prüfen, ob das Spiel vorbei ist
             if (lives <= 0) {

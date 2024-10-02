@@ -1,3 +1,7 @@
+export let lives = 3; // Leben als exportierte Variable
+export let score = 0; // Punktzahl als exportierte Variable
+
+
 export function drawLives(ctx, lives) {
     ctx.font = '20px Arial';
     ctx.fillStyle = 'black';
@@ -8,6 +12,12 @@ export function drawScore(ctx, score) {
     ctx.font = '20px Arial';
     ctx.fillStyle = 'black';
     ctx.fillText('Score: ' + score, 20, 60); // Punktzahl an der gewünschten Position anzeigen
+}
+
+
+// Funktion zur Erhöhung der Punktzahl
+export function increaseScore() {
+    score += 1; // Score um 1 erhöhen
 }
 
 export function isCollision(rect1, rect2) {
