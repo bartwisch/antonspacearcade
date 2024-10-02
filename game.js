@@ -1,7 +1,7 @@
 import { player, movePlayer, stopPlayer, drawPlayer, initPlayer } from './player.js';
 import { drawEnemies, spawnEnemy, enemies } from './enemy.js'; // Importiere enemies
 import { drawBullets, bullets, shootBullet } from './bullet.js';
-import { drawLives, isCollision, loseLife, resetGame, gameOver } from './utils.js';
+import { drawScore, drawLives, isCollision, loseLife, resetGame, gameOver } from './utils.js';
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -12,6 +12,7 @@ canvas.height = window.innerHeight;
 initPlayer(canvas.width, canvas.height);
 
 let lives = 3;
+let score = 0;
 
 function update() {
     // Bewegt den Spieler
@@ -29,19 +30,36 @@ function update() {
     drawBullets(ctx, bullets);      // Zeichne die Kugeln (bullets)
     drawEnemies(ctx, enemies, bullets);
     drawLives(ctx, lives);          // Zeichne die Anzahl der Leben
+    drawScore(ctx, score);          // Zeichne die Punktzahl
 
-    // Optional: Kollisionsüberprüfungen zwischen Kugeln und Gegnern hier hinzufügen
     // Kollisionsprüfung zwischen Kugeln und Gegnern
     bullets.forEach((bullet, bulletIndex) => {
         enemies.forEach((enemy, enemyIndex) => {
             if (isCollision(bullet, enemy)) {
                 // Entferne die getroffene Kugel
                 bullets.splice(bulletIndex, 1);
-
                 // Entferne den getroffenen Gegner
                 enemies.splice(enemyIndex, 1);
+                // Erhöhe die Punktzahl
+                score += 1;
             }
         });
+    });
+
+     // Kollisionsprüfung zwischen Spieler und Gegnern
+     enemies.forEach((enemy, enemyIndex) => {
+        if (isCollision(player, enemy)) {
+            // Gegner entfernen
+            enemies.splice(enemyIndex, 1);
+
+            // Leben um 1 reduzieren
+            lives -= 1;
+
+            // Prüfen, ob das Spiel vorbei ist
+            if (lives <= 0) {
+                gameOver(); // Spiel beenden und zurücksetzen
+            }
+        }
     });
 }
 
