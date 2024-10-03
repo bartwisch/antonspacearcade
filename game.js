@@ -1,5 +1,5 @@
 import { player, movePlayer, stopPlayer, drawPlayer, initPlayer } from './player.js';
-import { drawEnemies, spawnEnemy, enemies,removeEnemyAndAddExplosion } from './enemy.js'; // Importiere enemies
+import { drawEnemies, spawnEnemy, enemies,removeEnemyAndAddExplosion, drawExplosions } from './enemy.js'; // Importiere enemies
 import { drawBullets, bullets, shootBullet } from './bullet.js';
 import { drawLives, drawScore, isCollision, loseLife, resetGame, gameOver, lives, score, increaseScore } from './utils.js'; // Import der Variablen und Funktionen
 import { playLaserSound, playExplosionSound } from './sounds.js'; // Importiere die Soundfunktion
@@ -30,7 +30,8 @@ function update() {
     drawEnemies(ctx, enemies, bullets);
     drawLives(ctx, lives);          // Zeichne die Anzahl der Leben
     drawScore(ctx, score);          // Zeichne die Punktzahl
-
+    drawExplosions(ctx);            // Zeichne die Explosionen
+    
     // Kollisionsprüfung zwischen Kugeln und Gegnern
     bullets.forEach((bullet, bulletIndex) => {
         enemies.forEach((enemy, enemyIndex) => {
@@ -41,6 +42,7 @@ function update() {
             
                 // Entferne den getroffenen Gegner
                 enemies.splice(enemyIndex, 1);
+
                 playExplosionSound();
                 // Erhöhe die Punktzahl
                 increaseScore();
