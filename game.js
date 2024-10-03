@@ -12,6 +12,9 @@ canvas.height = window.innerHeight;
 
 initPlayer(canvas.width, canvas.height);
 
+let bulletsToRemove = [];
+let enemiesToRemove = [];
+
 
 function update() {
     // Bewegt den Spieler
@@ -31,27 +34,35 @@ function update() {
     drawLives(ctx, lives);          // Zeichne die Anzahl der Leben
     drawScore(ctx, score);          // Zeichne die Punktzahl
     drawExplosions(ctx);            // Zeichne die Explosionen
-    
+
+    // Arrays für zu löschende Kugeln und Gegner
+    let bulletsToRemove = [];
+    let enemiesToRemove = [];
+
     // Kollisionsprüfung zwischen Kugeln und Gegnern
     bullets.forEach((bullet, bulletIndex) => {
         enemies.forEach((enemy, enemyIndex) => {
             if (isCollision(bullet, enemy)) {
-                // Entferne die getroffene Kugel
-                bullets.splice(bulletIndex, 1);
+                // Markiere die Kugel und den Gegner zum Entfernen
+                bulletsToRemove.push(bulletIndex);
+                enemiesToRemove.push(enemyIndex);
                 removeEnemyAndAddExplosion(enemy); // Explosion hinzufügen
-            
-                // Entferne den getroffenen Gegner
-                enemies.splice(enemyIndex, 1);
-
                 playExplosionSound();
-                // Erhöhe die Punktzahl
-                increaseScore();
+                increaseScore(); // Erhöhe die Punktzahl
             }
         });
     });
 
-     // Kollisionsprüfung zwischen Spieler und Gegnern
-     enemies.forEach((enemy, enemyIndex) => {
+    // Entferne markierte Kugeln und Gegner in umgekehrter Reihenfolge, um Indizes korrekt zu halten
+    bulletsToRemove.reverse().forEach((bulletIndex) => {
+        bullets.splice(bulletIndex, 1);
+    });
+    enemiesToRemove.reverse().forEach((enemyIndex) => {
+        enemies.splice(enemyIndex, 1);
+    });
+
+    // Kollisionsprüfung zwischen Spieler und Gegnern
+    enemies.forEach((enemy, enemyIndex) => {
         if (isCollision(player, enemy)) {
             // Gegner entfernen
             enemies.splice(enemyIndex, 1);
@@ -69,7 +80,7 @@ function update() {
 }
 
 // Gegner alle 2 Sekunden spawnen lassen
-setInterval(() => spawnEnemy(canvas.width), 2000);
+setInterval(() => spawnEnemy(canvas.width), 500);
 
 // Die `update`-Funktion 60 Mal pro Sekunde aufrufen
 setInterval(update, 1000 / 60);
