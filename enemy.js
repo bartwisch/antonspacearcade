@@ -26,6 +26,7 @@ explosions.forEach((explosion, index) => {
     ctx.drawImage(explosionImage, explosion.x, explosion.y, explosion.size, explosion.size);
     explosion.timer--; // Timer für Explosion
 
+
     // Explosion entfernen, wenn der Timer abgelaufen ist
     if (explosion.timer <= 0) {
         explosions.splice(index, 1);
@@ -51,6 +52,6 @@ export function removeEnemyAndAddExplosion(enemy) {
         x: enemy.x,
         y: enemy.y,
         size: 200, // Größe der Explosion
-        timer: 30  // Timer für die Dauer der Explosion
+        timer: 50  // Timer für die Dauer der Explosion
     });
 }
