@@ -2,7 +2,7 @@ import { player, movePlayer, stopPlayer, drawPlayer, initPlayer } from './player
 import { drawEnemies, spawnEnemy, enemies,removeEnemyAndAddExplosion, drawExplosions } from './enemy.js'; // Importiere enemies
 import { drawBullets, bullets, shootBullet } from './bullet.js';
 import { drawLives, drawScore, isCollision, loseLife, resetGame, gameOver, lives, score, increaseScore } from './utils.js'; // Import der Variablen und Funktionen
-import { playLaserSound, playExplosionSound } from './sounds.js'; // Importiere die Soundfunktion
+import { playLaserSound, playExplosionSound, playBackgroundMusic, stopBackgroundMusic } from './sounds.js'; // Importiere die Soundfunktion
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -15,6 +15,7 @@ initPlayer(canvas.width, canvas.height);
 //let bulletsToRemove = [];
 //let enemiesToRemove = [];
 
+playBackgroundMusic()
 
 function update() {
     // Bewegt den Spieler
@@ -73,7 +74,9 @@ function update() {
 
             // Prüfen, ob das Spiel vorbei ist
             if (lives <= 0) {
+                stopBackgroundMusic();
                 gameOver(); // Spiel beenden und zurücksetzen
+
             }
         }
     });

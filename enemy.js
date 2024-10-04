@@ -14,11 +14,11 @@ export function drawEnemies(ctx, enemies, bullets) {
         enemy.y += 3;
         ctx.drawImage(enemyImage, enemy.x, enemy.y, enemy.width, enemy.height);
 
-        // Zeige die ID des Gegners anstelle des Index an
+      /*  // Zeige die ID des Gegners anstelle des Index an
         ctx.font = "20px Arial"; // Schriftart und -größe
         ctx.fillStyle = "white"; // Textfarbe
         ctx.fillText(`ID: ${enemy.id}`, enemy.x, enemy.y - 10); // Text über dem Gegner zeichnen
-
+*/
         // Gegner entfernen, wenn sie den unteren Rand des Bildschirms erreichen
         if (enemy.y > ctx.canvas.height) {
             enemies.splice(index, 1);
@@ -62,7 +62,7 @@ export function removeEnemyAndAddExplosion(enemy) {
         x: enemy.x,
         y: enemy.y,
         size: 50, // Größe der Explosion
-        timer: 20  // Timer für die Dauer der Explosion
+        timer: 10  // Timer für die Dauer der Explosion
     });
 }
 
