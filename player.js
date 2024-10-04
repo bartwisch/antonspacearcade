@@ -4,6 +4,7 @@ export let player = {
     width: 50,
     height: 50,
     dx: 0,
+    dy: 0,
     speed: 5,
 };
 
@@ -24,11 +25,18 @@ export function movePlayer(e) {
         player.dx = player.speed;
     } else if (e.key === 'ArrowLeft') {
         player.dx = -player.speed;
+    } else if (e.key === 'ArrowUp') {
+        player.dy = -player.speed;
+    } else if (e.key === 'ArrowDown') {
+        player.dy = player.speed;
     }
 }
 
 export function stopPlayer(e) {
     if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
         player.dx = 0;
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        player.dy = 0;
     }
 }
+
