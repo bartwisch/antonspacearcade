@@ -32,11 +32,14 @@ export function movePlayer(e) {
     }
 }
 
+
+
 export function stopPlayer(e) {
     if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-        player.dx = 0;
-    } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-        player.dy = 0;
+        if (player.dx !== 0) player.dx = 0; // Stoppt nur die horizontale Bewegung
+    }
+    
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        if (player.dy !== 0) player.dy = 0; // Stoppt nur die vertikale Bewegung
     }
 }
-
