@@ -1,7 +1,7 @@
 // sounds.js
 
 // Sounds laden
-const laserSound = new Audio('laser1.mp3'); // Pfad zur Audio-Datei anpassen
+const laserSound = new Audio('bullet1.mp3'); // Pfad zur Audio-Datei anpassen
 const explosionSound = new Audio('explosion1.mp3'); // Pfad zur Audio-Datei anpassen
 
 // Funktion zum Abspielen des Laser-Sounds

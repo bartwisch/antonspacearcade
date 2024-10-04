@@ -12,8 +12,8 @@ canvas.height = window.innerHeight;
 
 initPlayer(canvas.width, canvas.height);
 
-let bulletsToRemove = [];
-let enemiesToRemove = [];
+//let bulletsToRemove = [];
+//let enemiesToRemove = [];
 
 
 function update() {
@@ -45,7 +45,7 @@ function update() {
             if (isCollision(bullet, enemy)) {
                 // Markiere die Kugel und den Gegner zum Entfernen
                 bulletsToRemove.push(bulletIndex);
-                enemiesToRemove.push(enemyIndex);
+            
                 removeEnemyAndAddExplosion(enemy); // Explosion hinzufügen
                 playExplosionSound();
                 increaseScore(); // Erhöhe die Punktzahl
