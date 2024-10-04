@@ -1,4 +1,4 @@
-import { player, movePlayer, stopPlayer, drawPlayer, initPlayer } from './player.js';
+import { player,  stopPlayer, drawPlayer, initPlayer, startPlayer } from './player.js';
 import { drawEnemies, spawnEnemy, enemies,removeEnemyAndAddExplosion, drawExplosions } from './enemy.js'; // Importiere enemies
 import { drawBullets, bullets, shootBullet } from './bullet.js';
 import { drawLives, drawScore, isCollision, loseLife, resetGame, gameOver, lives, score, increaseScore } from './utils.js'; // Import der Variablen und Funktionen
@@ -6,6 +6,15 @@ import { playLaserSound, playExplosionSound, playBackgroundMusic, stopBackground
 import { weapons, getWeaponByName } from './weapons.js';
 
 
+
+document.addEventListener('keydown', startPlayer); // startPlayer zum Starten der Bewegung verwenden
+document.addEventListener('keyup', stopPlayer);    // stopPlayer zum Stoppen der Bewegung verwenden
+document.addEventListener('keydown', (e) => {
+    if (e.key === ' ') {  // Leertaste zum Schießen
+        shootBullet();
+        playLaserSound(); // Laser-Sound abspielen
+    }
+});
 
 // Standard-Waffe für den Spieler
 let currentWeapon = weapons.basicGun;
@@ -136,15 +145,3 @@ setInterval(() => spawnEnemy(canvas.width), 500);
 
 // Die `update`-Funktion 60 Mal pro Sekunde aufrufen
 setInterval(update, 1000 / 60);
-
-// Tastatur-Ereignisse für die Bewegung des Spielers und das Schießen
-document.addEventListener('keydown', movePlayer);
-document.addEventListener('keyup', stopPlayer);
-document.addEventListener('keydown', (e) => {
-    if (e.key === ' ') {  // Leertaste zum Schießen
-        shootBullet();
-        playLaserSound(); // Laser-Sound abspielen
-    }
-});
-
-
