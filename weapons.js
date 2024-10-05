@@ -14,7 +14,8 @@ export const weapons = {
         bulletWidth: 5,  // Breite der Kugel
         bulletHeight: 10, // Höhe der Kugel
         bulletSpeed: 7,  // Geschwindigkeit der Kugel
-        bulletSound: new Audio('bullet1.mp3')  // Sound für die Basic Gun
+        bulletSound: new Audio('bullet1.mp3'),  // Sound für die Basic Gun
+        soundDuration: 500  // Dauer des Sounds in Millisekunden (0.5 Sekunden)
     },
     autoBlaster: {
         name: 'Auto Blaster',
@@ -25,7 +26,8 @@ export const weapons = {
         bulletWidth: 25,  // Breite der Kugel
         bulletHeight: 20, // Höhe der Kugel
         bulletSpeed: 10,  // Schnellere Kugeln
-        bulletSound: new Audio('bullet2.mp3')  // Sound für den Auto Blaster
+        bulletSound: new Audio('bullet2.mp3'),  // Sound für den Auto Blaster
+        soundDuration: 1000  // Dauer des Sounds in Millisekunden (0.3 Sekunden)
     },
     laserCannon: {
         name: 'Laser Cannon',
@@ -36,7 +38,8 @@ export const weapons = {
         bulletWidth: 50,  // Breite der Kugel
         bulletHeight: 100, // Höhe der Kugel
         bulletSpeed: 5,  // Langsamere, aber größere Kugeln
-        bulletSound: new Audio('sound1.mp3')  // Sound für die Laser Cannon
+        bulletSound: new Audio('sound1.mp3'),  // Sound für die Laser Cannon
+        soundDuration: 1000  // Dauer des Sounds in Millisekunden (1 Sekunde)
     }
     // Weitere Waffen können hier hinzugefügt werden
 };
@@ -70,6 +73,18 @@ export function drawBullets(ctx) {
     });
 }
 
+// Funktion zum Abspielen des Schuss-Sounds für die Waffendauer
+function playWeaponSound(sound, duration) {
+    sound.currentTime = 0;
+    sound.play();
+
+    // Stoppe den Sound nach der festgelegten Dauer
+    setTimeout(() => {
+        sound.pause();
+        sound.currentTime = 0;  // Setze den Sound auf den Anfang zurück
+    }, duration);
+}
+
 export function shootBullet() {
     const bullet = {
         x: player.x + player.width / 2 - currentWeapon.bulletWidth / 2,
@@ -89,7 +104,6 @@ export function shootBullet() {
         }
     }, bullet.lifespan);
 
-    // Spiele den Sound der aktuellen Waffe ab
-    currentWeapon.bulletSound.currentTime = 0;
-    currentWeapon.bulletSound.play();
+    // Spiele den Sound der aktuellen Waffe ab für die definierte Dauer
+    playWeaponSound(currentWeapon.bulletSound, currentWeapon.soundDuration);
 }
