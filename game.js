@@ -3,7 +3,7 @@ import { drawEnemies, spawnEnemy, enemies,removeEnemyAndAddExplosion, drawExplos
 import { drawBullets, bullets, shootBullet } from './bullet.js';
 import { drawLives, drawScore, isCollision, loseLife, resetGame, gameOver, lives, score, increaseScore } from './utils.js'; // Import der Variablen und Funktionen
 import { playLaserSound, playExplosionSound, playBackgroundMusic, stopBackgroundMusic } from './sounds.js'; // Importiere die Soundfunktion
-import { weapons, getWeaponByName } from './weapons.js';
+import {  switchWeapon, currentWeapon } from './weapons.js';
 
 
 
@@ -16,8 +16,46 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Standard-Waffe für den Spieler
-let currentWeapon = weapons.basicGun;
+let isShooting = false;
+let shootInterval;
+let lastShotTime = 0;
+
+// Aktuelle Waffe global definieren
+//let currentWeapon = switchWeapon('basicGun');  // Setze Standardwaffe
+
+// Start Schießen, wenn Leertaste gedrückt wird
+document.addEventListener('keydown', (e) => {
+    if (e.key === ' ' && !isShooting) {
+        isShooting = true;
+        shootInterval = setInterval(() => {
+            const currentTime = Date.now();
+            if (currentTime - lastShotTime >= currentWeapon.fireRate) {
+                shootBullet();
+                playLaserSound();
+                lastShotTime = currentTime;  // Aktualisiere die Zeit des letzten Schusses
+            }
+        }, 50);  // Überprüfe alle 50ms, ob ein neuer Schuss möglich ist
+    }
+});
+
+// Waffenauswahl bei Tastendruck
+document.addEventListener('keydown', (e) => {
+    if (e.key === '1') {
+        currentWeapon = switchWeapon('basicGun');  // Ändere aktuelle Waffe
+    } else if (e.key === '2') {
+        currentWeapon = switchWeapon('autoBlaster');
+    } else if (e.key === '3') {
+        currentWeapon = switchWeapon('laserCannon');
+    }
+});
+
+// Stoppe das Schießen, wenn Leertaste losgelassen wird
+document.addEventListener('keyup', (e) => {
+    if (e.key === ' ') {
+        isShooting = false;
+        clearInterval(shootInterval);
+    }
+});
 
 
 const canvas = document.getElementById('gameCanvas');
@@ -27,9 +65,6 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 initPlayer(canvas.width, canvas.height);
-
-//let bulletsToRemove = [];
-//let enemiesToRemove = [];
 
 playBackgroundMusic()
 
@@ -91,6 +126,10 @@ function update() {
     drawEnemies(ctx, enemies, bullets);
     drawLives(ctx, lives);          // Zeichne die Anzahl der Leben
     drawScore(ctx, score);          // Zeichne die Punktzahl
+     // Aktuellen Waffennamen anzeigen
+     ctx.fillText(`Waffe: ${currentWeapon.name}`, 20, 80);  // Unter der Lebensanzeige
+    
+    
     drawExplosions(ctx);            // Zeichne die Explosionen
     drawUpgrades(ctx);       // Upgrades zeichnen
     checkUpgradeCollection(); // Upgrade-Einsammeln überprüfen
