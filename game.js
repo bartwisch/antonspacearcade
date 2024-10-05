@@ -2,7 +2,7 @@ import { player,  stopPlayer, drawPlayer, initPlayer, startPlayer } from './play
 import { drawEnemies, spawnEnemy, enemies,removeEnemyAndAddExplosion, drawExplosions } from './enemy.js'; // Importiere enemies
 import { drawLives, drawScore, isCollision, loseLife, resetGame, gameOver, lives, score, increaseScore } from './utils.js'; // Import der Variablen und Funktionen
 import {  playExplosionSound, playBackgroundMusic, stopBackgroundMusic } from './sounds.js'; // Importiere die Soundfunktion
-import {  switchWeapon, currentWeapon, drawBullets, shootBullet, bullets } from './weapons.js';
+import {  switchWeapon,  drawBullets, shootBullet, bullets } from './weapons.js';
 
 
 
