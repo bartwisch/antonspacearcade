@@ -11,6 +11,9 @@ export const weapons = {
         damage: 1,
         autoShoot: false,
         bulletImage: 'bullet1.png',  // Pfad zur Kugel-Grafik
+        bulletWidth: 5,  // Breite der Kugel
+        bulletHeight: 10, // Höhe der Kugel
+        bulletSound: new Audio('bullet1.mp3')  // Sound für die Basic Gun
     },
     autoBlaster: {
         name: 'Auto Blaster',
@@ -18,6 +21,9 @@ export const weapons = {
         damage: 1,
         autoShoot: true,
         bulletImage: 'bullet2.png',  // Unterschiedliche Kugel-Grafik
+        bulletWidth: 25,  // Breite der Kugel
+        bulletHeight: 20, // Höhe der Kugel
+        bulletSound: new Audio('bullet2.mp3')  // Sound für den Auto Blaster
     },
     laserCannon: {
         name: 'Laser Cannon',
@@ -25,7 +31,10 @@ export const weapons = {
         damage: 3,
         autoShoot: false,
         bulletImage: 'bullet3.png',  // Andere Grafik für den Laser
-    },
+        bulletWidth: 50,  // Breite der Kugel
+        bulletHeight: 100, // Höhe der Kugel
+        bulletSound: new Audio('sound1.mp3')  // Sound für die Laser Cannon
+    }
     // Weitere Waffen können hier hinzugefügt werden
 };
 
@@ -62,11 +71,15 @@ export function drawBullets(ctx) {
 // Funktion zum Schießen einer Kugel
 export function shootBullet() {
     const bullet = {
-        x: player.x + player.width / 2 - 2.5,  // Kugel in der Mitte des Spielers
+        x: player.x + player.width / 2 - currentWeapon.bulletWidth / 2,  // Kugel in der Mitte des Spielers
         y: player.y,
-        width: 5,
-        height: 10,
+        width: currentWeapon.bulletWidth,  // Verwende die Breite der aktuellen Waffe
+        height: currentWeapon.bulletHeight,  // Verwende die Höhe der aktuellen Waffe
         image: currentWeapon.bulletImage,  // Verwende das Kugel-Bild der aktuellen Waffe
     };
     bullets.push(bullet);  // Füge die Kugel zur Liste hinzu
+
+    // Spiele den Sound der aktuellen Waffe ab
+    currentWeapon.bulletSound.currentTime = 0;  // Setze den Sound zurück, damit er erneut abgespielt wird
+    currentWeapon.bulletSound.play();
 }
